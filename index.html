@@ -93,18 +93,11 @@
     aspect-ratio: 16/10; position: relative; overflow: hidden;
     background: #0a0c14;
   }
-  .thumb .bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(circle at 30% 30%, var(--c1, #6366f155), transparent 55%),
-      radial-gradient(circle at 80% 70%, var(--c2, #22d3ee33), transparent 50%),
-      linear-gradient(145deg, #14182a, #0a0c14);
+  .thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform .25s ease;
   }
-  .thumb .emoji {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 52px; filter: drop-shadow(0 8px 24px #0008);
-  }
+  .card:hover .thumb img { transform: scale(1.04); }
   .thumb .star {
     position: absolute; top: 10px; right: 10px;
     width: 32px; height: 32px; border-radius: 10px;
@@ -175,6 +168,7 @@
 const GAMES = [
   {
     id: 'jump',
+    img: 'thumbs/jump.jpg',
     title: '단체 줄넘기',
     desc: '여럿이 한 줄로 뛰는 멀티 리듬 협동. 타이밍을 맞추고 버티세요.',
     url: 'https://jumptogether.onrender.com/',
@@ -185,6 +179,7 @@ const GAMES = [
   },
   {
     id: 'tetris',
+    img: 'thumbs/tetris.jpg',
     title: '테트리스',
     desc: '클래식 블록 퍼즐. 줄을 지우고 스택을 지켜 보세요.',
     url: 'https://honeybadger9999.github.io/Tetris-BJ/',
@@ -195,6 +190,7 @@ const GAMES = [
   },
   {
     id: 'poop',
+    img: 'thumbs/poop.jpg',
     title: '똥피하기',
     desc: '하늘에서 떨어지는 걸 피하며 버텨 보세요.',
     url: 'https://nonojin99.github.io/Poop-Dodge/',
@@ -205,6 +201,7 @@ const GAMES = [
   },
   {
     id: '2048',
+    img: 'thumbs/2048.jpg',
     title: '2048',
     desc: '같은 수를 합쳐 2048을 만드는 머지 퍼즐.',
     url: 'https://nonojin99.github.io/Leaf-io/',
@@ -215,6 +212,7 @@ const GAMES = [
   },
   {
     id: 'suika',
+    img: 'thumbs/suika.jpg',
     title: '수박게임',
     desc: '같은 과일을 합쳐 수박을 만드는 물리 퍼즐.',
     url: 'https://nonojin99.github.io/-/',
@@ -225,6 +223,7 @@ const GAMES = [
   },
   {
     id: 'brick',
+    img: 'thumbs/brick.jpg',
     title: '벽돌깨기 1vs1',
     desc: '실시간 대전으로 벽돌을 깨는 1대1 아케이드.',
     url: 'https://nonojin99.github.io/Brick-breakers/',
@@ -235,6 +234,7 @@ const GAMES = [
   },
   {
     id: 'cater',
+    img: 'thumbs/cater.jpg',
     title: '애벌레 땅따먹기',
     desc: '영역을 넓히며 경쟁하는 멀티 테리토리 게임.',
     url: 'https://caterpiller-territory-game.onrender.com',
@@ -245,6 +245,7 @@ const GAMES = [
   },
   {
     id: 'billiards',
+    img: 'thumbs/billiards.jpg',
     title: '당구',
     desc: '각과 힘을 겨루는 당구 시뮬레이션.',
     url: 'https://nonojin99.github.io/billiards/',
@@ -255,6 +256,7 @@ const GAMES = [
   },
   {
     id: 'constellation',
+    img: 'thumbs/constellation.jpg',
     title: '별자리 항해',
     desc: '밤하늘을 여행하며 별자리를 탐험하는 인터랙티브 투어.',
     url: 'https://nonojin99.github.io/constellation-voyage/',
@@ -265,6 +267,7 @@ const GAMES = [
   },
   {
     id: 'cardnews',
+    img: 'thumbs/cardnews.jpg',
     title: '일일 카드뉴스',
     desc: '매일 쌓이는 카드뉴스 콘텐츠 뷰어.',
     url: 'https://nonojin99.github.io/Daily-Card-News/',
@@ -326,8 +329,7 @@ function render() {
     a.rel = 'noopener';
     a.innerHTML = `
       <div class="thumb">
-        <div class="bg" style="--c1:${g.c1};--c2:${g.c2}"></div>
-        <div class="emoji">${g.emoji}</div>
+        <img src="${g.img}" alt="${g.title}" loading="lazy">
         <button type="button" class="star ${favs.has(g.id) ? 'on' : ''}" data-id="${g.id}" title="즐겨찾기">★</button>
       </div>
       <div class="body">
