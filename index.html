@@ -13,7 +13,6 @@
     --text: #eef0f6;
     --muted: #9aa3b5;
     --accent: #c4f542;
-    --glow: #7c5cff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -27,21 +26,18 @@
     padding: 28px 20px 60px;
   }
   .wrap { max-width: 1180px; margin: 0 auto; }
-
   .eyebrow {
     font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
     color: #a78bfa; font-weight: 600; margin-bottom: 10px;
   }
   h1 {
     font-size: clamp(2rem, 4vw, 2.75rem);
-    font-weight: 700; letter-spacing: -0.03em;
-    margin-bottom: 22px;
+    font-weight: 700; letter-spacing: -0.03em; margin-bottom: 22px;
   }
   h1 span {
     background: linear-gradient(90deg, #e9d5ff, #a5b4fc, #c4f542);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-
   .toolbar {
     display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
     margin-bottom: 28px;
@@ -58,7 +54,6 @@
     color: var(--text); font: inherit; font-size: 14px;
   }
   .search input::placeholder { color: #6b7280; }
-
   .filters { display: flex; flex-wrap: wrap; gap: 8px; }
   .filters button {
     border: 1px solid var(--line); background: #0e1018; color: var(--muted);
@@ -69,15 +64,12 @@
   .filters button.on {
     background: var(--accent); color: #0b1200; border-color: transparent; font-weight: 700;
   }
-
   .count { margin-left: auto; font-size: 12px; color: var(--muted); }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 16px;
   }
-
   .card {
     display: flex; flex-direction: column;
     background: var(--card); border: 1px solid var(--line);
@@ -95,18 +87,18 @@
   }
   .thumb img {
     width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform .25s ease;
+    transition: transform .35s ease;
   }
-  .card:hover .thumb img { transform: scale(1.04); }
+  .card:hover .thumb img { transform: scale(1.05); }
   .thumb .star {
     position: absolute; top: 10px; right: 10px;
     width: 32px; height: 32px; border-radius: 10px;
-    background: #0006; border: 1px solid #ffffff18;
+    background: #0008; border: 1px solid #ffffff18;
     display: grid; place-items: center; cursor: pointer;
     color: #fff8; font-size: 14px; backdrop-filter: blur(6px);
+    z-index: 2;
   }
   .thumb .star.on { color: #fbbf24; }
-
   .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tag {
@@ -133,12 +125,10 @@
     transition: .15s ease;
   }
   .card:hover .foot .go { background: var(--accent); color: #0b1200; border-color: transparent; }
-
   .empty {
     grid-column: 1 / -1; text-align: center; padding: 48px 16px;
     color: var(--muted); font-size: 14px;
   }
-
   footer {
     margin-top: 40px; text-align: center; font-size: 12px; color: #5b6475;
   }
@@ -168,117 +158,117 @@
 const GAMES = [
   {
     id: 'jump',
-    img: 'thumbs/jump.jpg',
     title: '단체 줄넘기',
     desc: '여럿이 한 줄로 뛰는 멀티 리듬 협동. 타이밍을 맞추고 버티세요.',
     url: 'https://jumptogether.onrender.com/',
     cats: ['멀티', '리듬'],
     badge: '멀티플레이',
-    emoji: '🪢',
-    c1: '#2dd4bf66', c2: '#6366f144', t: '#5eead4'
+    img: 'thumbs/jump.jpg',
+    t: '#5eead4'
+  },
+  {
+    id: 'fortress',
+    title: '포트리스',
+    desc: '각도와 파워로 포를 쏘아 상대 요새를 무너뜨리는 턴제 포격 게임.',
+    url: 'https://nonojin99.github.io/Fortress/',
+    cats: ['전략', '아케이드'],
+    badge: '턴제',
+    img: 'thumbs/fortress.jpg',
+    t: '#fdba74'
   },
   {
     id: 'tetris',
-    img: 'thumbs/tetris.jpg',
     title: '테트리스',
     desc: '클래식 블록 퍼즐. 줄을 지우고 스택을 지켜 보세요.',
     url: 'https://honeybadger9999.github.io/Tetris-BJ/',
     cats: ['퍼즐', '클래식'],
     badge: '클래식',
-    emoji: '🧱',
-    c1: '#a78bfa66', c2: '#22d3ee33', t: '#c4b5fd'
-  },
-  {
-    id: 'poop',
-    img: 'thumbs/poop.jpg',
-    title: '똥피하기',
-    desc: '하늘에서 떨어지는 걸 피하며 버텨 보세요.',
-    url: 'https://nonojin99.github.io/Poop-Dodge/',
-    cats: ['아케이드', '캐주얼'],
-    badge: '캐주얼',
-    emoji: '💩',
-    c1: '#f59e0b55', c2: '#78716c33', t: '#fbbf24'
-  },
-  {
-    id: '2048',
-    img: 'thumbs/2048.jpg',
-    title: '2048',
-    desc: '같은 수를 합쳐 2048을 만드는 머지 퍼즐.',
-    url: 'https://nonojin99.github.io/Leaf-io/',
-    cats: ['퍼즐'],
-    badge: '머지',
-    emoji: '🔢',
-    c1: '#34d39955', c2: '#fbbf2433', t: '#6ee7b7'
-  },
-  {
-    id: 'suika',
-    img: 'thumbs/suika.jpg',
-    title: '수박게임',
-    desc: '같은 과일을 합쳐 수박을 만드는 물리 퍼즐.',
-    url: 'https://nonojin99.github.io/-/',
-    cats: ['퍼즐', '캐주얼'],
-    badge: '물리',
-    emoji: '🍉',
-    c1: '#fb718555', c2: '#4ade8033', t: '#fda4af'
+    img: 'thumbs/tetris.jpg',
+    t: '#c4b5fd'
   },
   {
     id: 'brick',
-    img: 'thumbs/brick.jpg',
     title: '벽돌깨기 1vs1',
     desc: '실시간 대전으로 벽돌을 깨는 1대1 아케이드.',
     url: 'https://nonojin99.github.io/Brick-breakers/',
     cats: ['아케이드', '멀티', '대전'],
     badge: '1vs1',
-    emoji: '🧱',
-    c1: '#f472b655', c2: '#38bdf833', t: '#f9a8d4'
+    img: 'thumbs/brick.jpg',
+    t: '#f9a8d4'
+  },
+  {
+    id: 'poop',
+    title: '똥피하기',
+    desc: '하늘에서 떨어지는 걸 피하며 버텨 보세요.',
+    url: 'https://nonojin99.github.io/Poop-Dodge/',
+    cats: ['아케이드', '캐주얼'],
+    badge: '캐주얼',
+    img: 'thumbs/poop.jpg',
+    t: '#fbbf24'
+  },
+  {
+    id: '2048',
+    title: '2048',
+    desc: '같은 수를 합쳐 2048을 만드는 머지 퍼즐.',
+    url: 'https://nonojin99.github.io/Leaf-io/',
+    cats: ['퍼즐'],
+    badge: '머지',
+    img: 'thumbs/2048.jpg',
+    t: '#6ee7b7'
+  },
+  {
+    id: 'suika',
+    title: '수박게임',
+    desc: '같은 과일을 합쳐 수박을 만드는 물리 퍼즐.',
+    url: 'https://nonojin99.github.io/-/',
+    cats: ['퍼즐', '캐주얼'],
+    badge: '물리',
+    img: 'thumbs/suika.jpg',
+    t: '#fda4af'
   },
   {
     id: 'cater',
-    img: 'thumbs/cater.jpg',
     title: '애벌레 땅따먹기',
     desc: '영역을 넓히며 경쟁하는 멀티 테리토리 게임.',
     url: 'https://caterpiller-territory-game.onrender.com',
     cats: ['멀티', '전략'],
     badge: '멀티플레이',
-    emoji: '🐛',
-    c1: '#84cc1655', c2: '#22c55e33', t: '#a3e635'
+    img: 'thumbs/cater.jpg',
+    t: '#a3e635'
   },
   {
     id: 'billiards',
-    img: 'thumbs/billiards.jpg',
     title: '당구',
     desc: '각과 힘을 겨루는 당구 시뮬레이션.',
     url: 'https://nonojin99.github.io/billiards/',
     cats: ['스포츠', '시뮬레이션'],
     badge: '스포츠',
-    emoji: '🎱',
-    c1: '#38bdf855', c2: '#64748b33', t: '#7dd3fc'
+    img: 'thumbs/billiards.jpg',
+    t: '#7dd3fc'
   },
   {
     id: 'constellation',
-    img: 'thumbs/constellation.jpg',
     title: '별자리 항해',
     desc: '밤하늘을 여행하며 별자리를 탐험하는 인터랙티브 투어.',
     url: 'https://nonojin99.github.io/constellation-voyage/',
     cats: ['탐험', '인터랙티브'],
     badge: '탐험',
-    emoji: '✨',
-    c1: '#818cf855', c2: '#c084fc33', t: '#a5b4fc'
+    img: 'thumbs/constellation.jpg',
+    t: '#a5b4fc'
   },
   {
     id: 'cardnews',
-    img: 'thumbs/cardnews.jpg',
     title: '일일 카드뉴스',
     desc: '매일 쌓이는 카드뉴스 콘텐츠 뷰어.',
     url: 'https://nonojin99.github.io/Daily-Card-News/',
     cats: ['콘텐츠'],
     badge: '콘텐츠',
-    emoji: '📰',
-    c1: '#f9731655', c2: '#eab30833', t: '#fdba74'
+    img: 'thumbs/cardnews.jpg',
+    t: '#fdba74'
   }
 ];
 
-const FILTERS = ['전체', '멀티', '퍼즐', '아케이드', '캐주얼', '전략', '스포츠', '탐험', '콘텐츠'];
+const FILTERS = ['전체', '멀티', '퍼즐', '아케이드', '캐주얼', '전략', '스포츠', '탐험', '콘텐츠', '리듬', '클래식', '대전'];
 
 const favKey = 'gl_favs';
 const favs = new Set(JSON.parse(localStorage.getItem(favKey) || '[]'));
