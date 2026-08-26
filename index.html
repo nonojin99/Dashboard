@@ -129,6 +129,13 @@
     grid-column: 1 / -1; text-align: center; padding: 48px 16px;
     color: var(--muted); font-size: 14px;
   }
+  .ethumb {
+    width: 100%; height: 100%; display: grid; place-items: center;
+    font-size: 56px;
+    background: radial-gradient(120% 120% at 20% 0%, #2a1b5e66, transparent), #0a0c14;
+    transition: transform .35s ease;
+  }
+  .card:hover .ethumb { transform: scale(1.08); }
   footer {
     margin-top: 40px; text-align: center; font-size: 12px; color: #5b6475;
   }
@@ -151,7 +158,7 @@
   </div>
 
   <div class="grid" id="grid"></div>
-  <footer>nonojin · GitHub Pages & Render</footer>
+  <footer>nonojin · GitHub Pages & Render · <a href="https://daily-games-afim.onrender.com/stats" target="_blank" rel="noopener" style="color:#a5b4fc;text-decoration:none">📊 데일리 게임 통계</a></footer>
 </div>
 
 <script>
@@ -298,7 +305,42 @@ const GAMES = [
   }
 ];
 
-const FILTERS = ['전체', '멀티', '퍼즐', '아케이드', '캐주얼', '전략', '스포츠', '탐험', '콘텐츠', '리듬', '클래식', '대전'];
+const FILTERS = ['전체', 'DAILY', '멀티', '퍼즐', '아케이드', '캐주얼', '전략', '스포츠', '탐험', '콘텐츠', '리듬', '클래식', '대전'];
+
+/* ===== Daily Games (Supabase에서 자동 로드 — 새 게임이 나오면 자동 반영) ===== */
+const DAILY_API = 'https://fpjgjwazqpfiffnsgume.supabase.co/rest/v1/games'
+  + '?select=slug,title,day,description,published_on,emoji&order=day.desc';
+const DAILY_KEY = 'sb_publishable_I1YgcnYNBOaGy0WwozO2wQ_PGwsLtU5';
+const DAILY_BASE = 'https://daily-games-afim.onrender.com/games/';
+const DAILY_COLORS = ['#c4f542', '#22d3ee', '#f9a8d4', '#fbbf24', '#a5b4fc', '#6ee7b7', '#fdba74'];
+const STATS_URL = 'https://daily-games-afim.onrender.com/stats';
+
+const dailyHeaders = { apikey: DAILY_KEY, Authorization: 'Bearer ' + DAILY_KEY, 'Content-Type': 'application/json' };
+Promise.all([
+  fetch(DAILY_API, { headers: dailyHeaders }).then(r => r.ok ? r.json() : []),
+  // 실시간 플레이 통계 (game_stats RPC — 실패해도 목록은 정상 표시)
+  fetch('https://fpjgjwazqpfiffnsgume.supabase.co/rest/v1/rpc/game_stats', { method: 'POST', headers: dailyHeaders, body: '{}' })
+    .then(r => r.ok ? r.json() : []).catch(() => [])
+])
+  .then(([rows, stats]) => {
+    const statMap = {};
+    stats.forEach(s => { statMap[s.game_id] = s; });
+    rows.forEach(g => {
+      const st = statMap[g.slug];
+      GAMES.push({
+        id: 'daily-' + g.slug,
+        title: g.title,
+        desc: `DAY ${g.day} · ${g.description}`,
+        url: DAILY_BASE + g.slug + '/',
+        cats: ['DAILY'],
+        badge: 'DAY ' + g.day + (st && Number(st.starts) > 0 ? ` · ▶ ${st.starts}회` : ''),
+        emoji: g.emoji || '🎮',
+        t: DAILY_COLORS[g.day % DAILY_COLORS.length]
+      });
+    });
+    if (rows.length) render();
+  })
+  .catch(() => {}); // 실패해도 기존 목록은 정상 표시
 
 const favKey = 'gl_favs';
 const favs = new Set(JSON.parse(localStorage.getItem(favKey) || '[]'));
@@ -349,7 +391,7 @@ function render() {
     a.rel = 'noopener';
     a.innerHTML = `
       <div class="thumb">
-        <img src="${g.img}" alt="${g.title}" loading="lazy">
+        ${g.img ? `<img src="${g.img}" alt="${g.title}" loading="lazy">` : `<div class="ethumb">${g.emoji || '🎮'}</div>`}
         <button type="button" class="star ${favs.has(g.id) ? 'on' : ''}" data-id="${g.id}" title="즐겨찾기">★</button>
       </div>
       <div class="body">
