@@ -313,6 +313,10 @@ const DAILY_API = 'https://fpjgjwazqpfiffnsgume.supabase.co/rest/v1/games'
 const DAILY_KEY = 'sb_publishable_I1YgcnYNBOaGy0WwozO2wQ_PGwsLtU5';
 const DAILY_BASE = 'https://daily-games-afim.onrender.com/games/';
 const DAILY_COLORS = ['#c4f542', '#22d3ee', '#f9a8d4', '#fbbf24', '#a5b4fc', '#6ee7b7', '#fdba74'];
+/* 데일리 게임에 덧붙일 추가 카테고리 — 자동 항목에 얹어서 카드 중복 없이 퍼즐 등 필터에도 잡히게 */
+const DAILY_EXTRA = {
+  'dot-atelier': ['퍼즐']
+};
 const STATS_URL = 'https://daily-games-afim.onrender.com/stats';
 
 const dailyHeaders = { apikey: DAILY_KEY, Authorization: 'Bearer ' + DAILY_KEY, 'Content-Type': 'application/json' };
@@ -332,7 +336,7 @@ Promise.all([
         title: g.title,
         desc: `DAY ${g.day} · ${g.description}`,
         url: DAILY_BASE + g.slug + '/',
-        cats: ['DAILY'],
+        cats: ['DAILY'].concat(DAILY_EXTRA[g.slug] || []),
         badge: 'DAY ' + g.day + (st && Number(st.starts) > 0 ? ` · ▶ ${st.starts}회` : ''),
         emoji: g.emoji || '🎮',
         t: DAILY_COLORS[g.day % DAILY_COLORS.length]
