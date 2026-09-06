@@ -312,6 +312,7 @@ const DAILY_API = 'https://fpjgjwazqpfiffnsgume.supabase.co/rest/v1/games'
   + '?select=slug,title,day,description,published_on,emoji&order=day.desc';
 const DAILY_KEY = 'sb_publishable_I1YgcnYNBOaGy0WwozO2wQ_PGwsLtU5';
 const DAILY_BASE = 'https://daily-games-afim.onrender.com/games/';
+const DAILY_THUMB = 'https://daily-games-afim.onrender.com/thumb/';   // game_thumbs 테이블의 720×405 WebP (없으면 이모지로 폴백)
 const DAILY_COLORS = ['#c4f542', '#22d3ee', '#f9a8d4', '#fbbf24', '#a5b4fc', '#6ee7b7', '#fdba74'];
 /* 데일리 게임에 덧붙일 추가 카테고리 — 자동 항목에 얹어서 카드 중복 없이 퍼즐 등 필터에도 잡히게 */
 const DAILY_EXTRA = {
@@ -339,6 +340,7 @@ Promise.all([
         cats: ['DAILY'].concat(DAILY_EXTRA[g.slug] || []),
         badge: 'DAY ' + g.day + (st && Number(st.starts) > 0 ? ` · ▶ ${st.starts}회` : ''),
         emoji: g.emoji || '🎮',
+        img: DAILY_THUMB + g.slug + '.webp',
         t: DAILY_COLORS[g.day % DAILY_COLORS.length]
       });
     });
@@ -395,7 +397,7 @@ function render() {
     a.rel = 'noopener';
     a.innerHTML = `
       <div class="thumb">
-        ${g.img ? `<img src="${g.img}" alt="${g.title}" loading="lazy">` : `<div class="ethumb">${g.emoji || '🎮'}</div>`}
+        ${g.img ? `<img src="${g.img}" alt="${g.title}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ethumb',textContent:'${g.emoji || '🎮'}'}))">` : `<div class="ethumb">${g.emoji || '🎮'}</div>`}
         <button type="button" class="star ${favs.has(g.id) ? 'on' : ''}" data-id="${g.id}" title="즐겨찾기">★</button>
       </div>
       <div class="body">
